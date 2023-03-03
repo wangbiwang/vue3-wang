@@ -32,14 +32,14 @@ export function track(target: object, key: unknown) {
     if (!dep) {
         depsMap.set(key, (dep = cerateDep()))
     }
-    trackEffect(dep)
+    trackEffects(dep)
     // depsMap.set(key, activeEffect)
     // console.log(targetMap)
 }
 /**
  * 利用dep 依次跟踪key的所有effect
  */
-export function trackEffect(dep: Dep) {
+export function trackEffects(dep: Dep) {
     dep.add(activeEffect!)
 }
 

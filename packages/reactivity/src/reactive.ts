@@ -1,3 +1,4 @@
+import { isObjeact } from '@vue/shared'
 import { mutableHandlers } from './baseHandlers'
 /**
  * 响应性Map缓存
@@ -16,4 +17,7 @@ function creactReactiveObject(target: object, baseHandlers: ProxyHandler<any>, P
     const proxy = new Proxy(target, baseHandlers)
     ProxyMap.set(target, proxy)
     return proxy
+}
+export const toReactive = <T extends unknown>(value: T): T => {
+    return isObjeact(value) ? reactive(value as object) : value
 }
