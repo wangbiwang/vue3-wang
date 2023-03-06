@@ -4,3 +4,5 @@ export const isObjeact = (val: unknown) => val !== null && typeof val === 'objec
  * 对比数据是否发生变化
  */
 export const hasChanged = (value: unknown, oldValue: unknown): boolean => !Object.is(value, oldValue)
+
+export const isFunction = (val: unknown): val is Function => typeof val === 'function'

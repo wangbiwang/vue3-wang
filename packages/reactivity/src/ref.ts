@@ -9,13 +9,13 @@ export interface Ref<T = any> {
 export function ref(value: unknown) {
     return createRef(value, false)
 }
-function createRef(rawValue: unknown, shallow: boolean) {
+export function createRef(rawValue: unknown, shallow: boolean) {
     if (isRef(rawValue)) {
         return rawValue
     }
     return new RefImpl(rawValue, shallow)
 }
-class RefImpl<T> {
+export class RefImpl<T> {
     private _value: T
     private _rawValue: T
     public dep?: Dep = undefined
@@ -36,12 +36,12 @@ class RefImpl<T> {
         }
     }
 }
-function trackRefValue(ref) {
+export function trackRefValue(ref) {
     if (activeEffect) {
         trackEffects(ref.dep || (ref.dep = cerateDep()))
     }
 }
-function triggerRefValue(ref) {
+export function triggerRefValue(ref) {
     if (ref.dep) {
         triggerEffects(ref.dep)
     }
