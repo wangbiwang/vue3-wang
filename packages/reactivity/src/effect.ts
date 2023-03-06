@@ -64,10 +64,20 @@ export function trigger(target: object, key: unknown, value: unknown) {
 export function triggerEffects(dep: Dep) {
     const effects = isArray(dep) ? dep : [...dep]
     for (const effect of effects) {
-        if (effect.scheduler) {
-            effect.scheduler()
-        } else {
-            effect.run()
+        if (effect.computed) {
+            triggerEffect(effect)
         }
+    }
+    for (const effect of effects) {
+        if (!effect.computed) {
+            triggerEffect(effect)
+        }
+    }
+}
+export function triggerEffect(effect: ReactiveEffect) {
+    if (effect.scheduler) {
+        effect.scheduler()
+    } else {
+        effect.run()
     }
 }
