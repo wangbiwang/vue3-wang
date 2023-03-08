@@ -74,4 +74,4 @@ let total = product.price * product.quantity
 ### ref实现：ref函数本质上是生成了一个RefImpl的实例对象，通过set和get标记处理了value函数,  ref处理简单数据类型的响应性，无法通过proxy实现，所以通过get value和set value 来主动触发函数调用，进行依赖收集和依赖触发。
 
 ### computed:响应式依赖会被缓存，数据更新会重新计算。
-
+### watch:接受三个参数，监听数据变化，更新依赖。

@@ -1,4 +1,4 @@
-import { isArray } from '@vue/shared'
+import { extend, isArray } from '@vue/shared'
 import { Dep, cerateDep } from './dep'
 import { ComputedRefImpl } from './computed'
 
@@ -11,10 +11,23 @@ export class ReactiveEffect<T = any> {
         activeEffect = this
         return this.fn()
     }
+    stop(){
+        
+    }
 }
-export function effect<T = any>(fn: () => T) {
+export interface ReactiveEffectOPtions {
+    lazy?: boolean
+    scheduler?: EffectScheduler
+}
+export function effect<T = any>(fn: () => T, option?: ReactiveEffectOPtions) {
     const _effect = new ReactiveEffect(fn)
-    _effect.run()
+    if (option) {
+        //合并option中的调度器
+        extend(_effect, option)
+    }
+    if (!option || !option.lazy) {
+        _effect.run()
+    }
 }
 type keyToDepMap = Map<any, Dep>
 const targetMap = new WeakMap<object, keyToDepMap>()
@@ -23,7 +36,7 @@ const targetMap = new WeakMap<object, keyToDepMap>()
  * 收集依赖
  */
 export function track(target: object, key: unknown) {
-    console.log('收集依赖')
+    // console.log('收集依赖')
     if (!activeEffect) return
     let depsMap = targetMap.get(target)
     if (!depsMap) {
@@ -49,7 +62,7 @@ export function trackEffects(dep: Dep) {
  * 触发依赖
  */
 export function trigger(target: object, key: unknown, value: unknown) {
-    console.log('触发依赖')
+    // console.log('触发依赖')
     let depsMap = targetMap.get(target)
     if (!depsMap) return
     let dep: Dep | undefined = depsMap.get(key)
@@ -59,7 +72,7 @@ export function trigger(target: object, key: unknown, value: unknown) {
     // effect.run()
 }
 /**
- * 依此触发dep中保存的依赖
+ * 依次触发dep中保存的依赖
  */
 export function triggerEffects(dep: Dep) {
     const effects = isArray(dep) ? dep : [...dep]
