@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="../../dist/vue.js"></script>
+    </head>
+    <body>
+        <div id="app"></div>
+    </body>
+    <script>
+        const { ref, reactive, effect, watch, h, render } = Vue
+        console.log(render)
+        render(
+            h(
+                'button',
+                {
+                    onClick() {
+                        alert('点击')
+                    },
+                    style: {
+                        color: 'red',
+                    },
+                    class: 'test',
+                },
+                '点击'
+            ),
+            document.querySelector('#app')
+        )
+        setTimeout(() => {
+            render(
+                h(
+                    'button',
+                    {
+                        onDblclick() {
+                            alert('双击')
+                        },
+                        style: {
+                            fontSize: '60px',
+                            opacity: 0.5,
+                        },
+                        class: 'test',
+                    },
+                    '双击'
+                ),
+                document.querySelector('#app')
+            )
+        }, 10000)
+    </script>
+</html>
